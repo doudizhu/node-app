@@ -1,0 +1,17 @@
+{
+  "name": "app",
+  "version": "1.0.0",
+  "description": "restful api",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "server": "nodemon server.js"
+
+  },
+  "author": "米斯特吴",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
