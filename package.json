@@ -12,7 +12,8 @@
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^3.0.6",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "gravatar": "^1.8.0"
   },
   "devDependencies": {
     "body-parser": "^1.19.0",
