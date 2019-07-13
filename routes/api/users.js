@@ -61,4 +61,30 @@ router.post(
   }
 )
 
+// $router POST api/users/login
+// @desc 返回token jwt passport
+// @access public
+
+router.post('/login',(req,res)=>{
+  const email = req.body.email
+  const password = req.body.password
+  // 查询数据库
+  User.findOne({email})
+    .then(user=>{
+      if(!user){
+        return res.status(404).json({email:'用户不存在！'})
+      }
+
+      // 密码匹配
+      bcrypt.compare(password, user.password)
+        .then(isMatch=>{
+          if(isMatch){
+            res.json({msg:'success'})
+          }else{
+            return res.status(400).json({password:'密码错误！'})
+          }
+        })
+    })
+})
+
 module.exports = router
