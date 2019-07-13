@@ -5,6 +5,7 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const gravatar = require('gravatar')
 const keys = require('../../config/keys')
+const passport = require('passport')
 
 const User = require('../../models/User')
 
@@ -51,7 +52,6 @@ router.post(
                 if(err) throw err;
 
                 newUser.password = hash
-                console.log()
 
                 newUser.save()
                   .then(user=>res.json(user))
@@ -91,7 +91,7 @@ router.post('/login',(req,res)=>{
               if(err) throw err
               res.json({
                 success: true,
-                token:'mrwu'+token
+                token:'Bearer '+token
               })
             })
           }else{
@@ -99,6 +99,18 @@ router.post('/login',(req,res)=>{
           }
         })
     })
+})
+
+
+// $router GET api/users/current
+// @desc return current user
+// @access Private
+router.get('/current',passport.authenticate('jwt',{session:false}),(req,res)=>{
+  res.json({
+    id: req.user.id,
+    name: req.user.name,
+    email: req.user.email,
+  })
 })
 
 module.exports = router
