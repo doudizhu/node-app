@@ -12,16 +12,16 @@ const User = require('../../models/User')
 // $router GET api/users/test
 // @desc 返回请求的json数据
 // @access public
-router.get(
-  '/test',
-  (req,res)=>{
-    res.json(
-      {
-        msg: 'login works',
-      }
-    )
-  }
-)
+// router.get(
+//   '/test',
+//   (req,res)=>{
+//     res.json(
+//       {
+//         msg: 'login works',
+//       }
+//     )
+//   }
+// )
 
 // $router POST api/users/register
 // @desc 返回请求的json数据
@@ -35,7 +35,7 @@ router.post(
     User.findOne({email: req.body.email})
       .then((user)=>{
         if(user){
-          return res.status(400).json({email:'邮箱已被注册!'})
+          return res.status(400).json('邮箱已被注册!')
         }else{
           const avatar = gravatar.url(req.body.email, {s: '200', r: 'pg', d: 'mm'});
 
@@ -43,7 +43,8 @@ router.post(
             name:req.body.name,
             email:req.body.email,
             avatar,
-            password:req.body.password
+            password:req.body.password,
+            identity: req.body.identity,
           })
 
           bcrypt.genSalt(10, function(err, salt) {
@@ -74,7 +75,7 @@ router.post('/login',(req,res)=>{
   User.findOne({email})
     .then(user=>{
       if(!user){
-        return res.status(404).json({email:'用户不存在！'})
+        return res.status(404).json('用户不存在！')
       }
 
       // 密码匹配
@@ -84,6 +85,8 @@ router.post('/login',(req,res)=>{
             const rule = {
               id: user.id,
               name: user.name,
+              avatar: user.avatar,
+              identity: user.identity,
             }
 
             // jwt.sign('规则','加密名字','过期时间','箭头函数')
@@ -95,7 +98,7 @@ router.post('/login',(req,res)=>{
               })
             })
           }else{
-            return res.status(400).json({password:'密码错误！'})
+            return res.status(400).json('密码错误！')
           }
         })
     })
@@ -110,6 +113,7 @@ router.get('/current',passport.authenticate('jwt',{session:false}),(req,res)=>{
     id: req.user.id,
     name: req.user.name,
     email: req.user.email,
+    identity: req.user.identity,
   })
 })
 
