@@ -2,7 +2,9 @@
 const express = require('express')
 const router = express.Router()
 const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
 const gravatar = require('gravatar')
+const keys = require('../../config/keys')
 
 const User = require('../../models/User')
 
@@ -79,7 +81,19 @@ router.post('/login',(req,res)=>{
       bcrypt.compare(password, user.password)
         .then(isMatch=>{
           if(isMatch){
-            res.json({msg:'success'})
+            const rule = {
+              id: user.id,
+              name: user.name,
+            }
+
+            // jwt.sign('规则','加密名字','过期时间','箭头函数')
+            jwt.sign(rule, keys.secretOrKey, {expiresIn:3600},(err,token)=>{
+              if(err) throw err
+              res.json({
+                success: true,
+                token:'mrwu'+token
+              })
+            })
           }else{
             return res.status(400).json({password:'密码错误！'})
           }
