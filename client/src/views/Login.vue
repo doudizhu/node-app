@@ -10,10 +10,10 @@
           el-input(v-model='ruleForm.password' type='password')
         el-form-item
           el-button.submit_btn(@click="submitForm('ruleForm')") 提交
-          .tiparea
-        p
-          | 还没有账号？现在
-          router-link(to='/register') 注册
+        .tiparea  
+          p
+            | 还没有账号？现在
+            router-link(to='/register') 注册
 </template>
 
 <script>
