@@ -1,23 +1,19 @@
 <template lang="pug">
-  .register
+  .login
     .form_container
       .manage_tip
         .title 米修在线管理后台系统
       el-form.ruleForm(:model='ruleForm', :rules='rules', ref='ruleForm', label-width='100px')
-        el-form-item(label='用户名', prop='name')
-          el-input(v-model='ruleForm.name')
         el-form-item(label='邮箱', prop='email')
           el-input(v-model='ruleForm.email')
         el-form-item(label='密码', prop='password')
           el-input(v-model='ruleForm.password' type='password')
-        el-form-item(label='确认密码', prop='password2')
-          el-input(v-model='ruleForm.password2' type='password')
-        el-form-item(label='选择身份')
-          el-select(v-model='ruleForm.identity')
-            el-option(label='管理员' value='manager')
-            el-option(label='员工' value='employee')
         el-form-item
           el-button.submit_btn(@click="submitForm('ruleForm')") 提交
+          .tiparea
+        p
+          | 还没有账号？现在
+          router-link(to='/register') 注册
 </template>
 
 <script>
@@ -33,31 +29,16 @@ export default {
 
     return {
       ruleForm:{
-        name:'', // test
         email:'', // test@test.com
         password:'', // 123qwe
-        password2:'', // 123qwe
-        identity:'', // manager & employee
       },
       rules:{
-        name:[
-          {required:true,message:'请输入',trigger:'blur'},
-          {min:2,max:30,message:'长度在2到30个字符之间',trigger:'blur'},
-        ],
         email:[
           {type:'email',required:true,message:'邮箱格式不正确',trigger:'blur'},
         ],
         password:[
           {required:true,message:'请输入',trigger:'blur'},
           {min:6,max:30,message:'长度在6到30个字符之间',trigger:'blur'},
-        ],
-        password2:[
-          {required:true,message:'请输入',trigger:'blur'},
-          {min:6,max:30,message:'长度在6到30个字符之间',trigger:'blur'},
-          {
-            validator:validatePass2,
-            trigger:'blur',
-          }
         ],
       }
     }
@@ -67,15 +48,15 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.$axios
-            .post('/api/users/register', this.ruleForm)
+            .post('/api/users/login', this.ruleForm)
             .then(res=>{
-              // 注册成功
-              this.$message({
-                message:'账号注册成功！',
-                type: 'success',
-              })
+              // console.log(res)
+              // token
+              const {token} = res.data;
+              // 存储到ls
+              localStorage.setItem('eleToken', token)
 
-              this.$router.push('/login')
+              this.$router.push('/index')
             })
         }
       });
@@ -85,7 +66,7 @@ export default {
 </script>
 
 <style scoped>
-.register {
+.login {
   position: relative;
   width: 100%;
   height: 100%;
@@ -96,7 +77,7 @@ export default {
   width: 370px;
   height: 210px;
   position: absolute;
-  top: 10%;
+  top: 20%;
   left: 34%;
   padding: 25px;
   border-radius: 5px;
@@ -118,5 +99,13 @@ export default {
 
 .submit_btn {
   width: 100%;
+}
+.tiparea {
+  text-align: right;
+  font-size: 12px;
+  color: #333;
+}
+.tiparea p a {
+  color: #409eff;
 }
 </style>
