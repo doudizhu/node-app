@@ -3,11 +3,36 @@
     .form_container
       .manage_tip
         .title 米修在线管理后台系统
+      el-form.ruleForm(:model='ruleForm', :rules='rules', ref='ruleForm', label-width='100px')
+        el-form-item(label='用户名', prop='name')
+          el-input(v-model='ruleForm.name')
+        el-form-item(label='邮箱', prop='email')
+          el-input(v-model='ruleForm.email')
+        el-form-item(label='密码', prop='password')
+          el-input(v-model='ruleForm.password' type='password')
+        el-form-item(label='确认密码', prop='password2')
+          el-input(v-model='ruleForm.password2' type='password')
+        el-form-item(label='选择身份')
+          el-select(v-model='ruleForm.identity')
+            el-option(label='管理员' value='manager')
+            el-option(label='员工' value='employee')
+        el-form-item
+          el-button.submit_btn(@click="submitForm('ruleForm')") 提交
 </template>
 
 <script>
 export default {
-  
+  data(){
+    return {
+      ruleForm:{
+        name:'',
+        email:'',
+        password:'',
+        password2:'',
+        identity:'',
+      }
+    }
+  }
 }
 </script>
 
@@ -35,7 +60,7 @@ export default {
   font-size: 26px;
   color: #fff;
 }
-.registerForm {
+.ruleForm {
   margin-top: 20px;
   background-color: #fff;
   padding: 20px 40px 20px 20px;
