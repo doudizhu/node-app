@@ -33,11 +33,11 @@ export default {
 
     return {
       ruleForm:{
-        name:'',
-        email:'',
-        password:'',
-        password2:'',
-        identity:'',
+        name:'', // test
+        email:'', // test@test.com
+        password:'', // 123qwe
+        password2:'', // 123qwe
+        identity:'', // manager & employee
       },
       rules:{
         name:[
@@ -66,10 +66,16 @@ export default {
     submitForm(formName){
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          alert('submit!');
-        } else {
-          console.log('error submit!!');
-          return false;
+          this.$axios
+            .post('/api/users/register', this.ruleForm)
+            .then(res=>{
+              // 注册成功
+              this.$message({
+                message:'账号注册成功！',
+                type: 'success',
+              })
+            })
+          // this.$router.push('/login')
         }
       });
     }
