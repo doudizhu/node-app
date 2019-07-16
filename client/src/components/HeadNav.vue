@@ -6,18 +6,51 @@
         span.title 米修在线后台管理系统
       el-col(:span='6').user
         .userinfo
-          img(src='user.avatar').avatar
+          img(:src='user.avatar').avatar
           .welcome
             p.name.comename 欢迎
-            p.name.avatarname 米斯特吴
-          .username
+            p.name.avatarname {{user.name}}
+          span.username
             //- 下拉箭头
-
+            el-dropdown(trigger='click' @command='handleCommand')
+              span.el-dropdown-link
+                i.el-icon-caret-bottom.el-icon--right
+              el-dropdown-menu(slot='dropdown')
+                el-dropdown-item(command='info') 个人信息
+                el-dropdown-item(command='logout') 退出
 </template>
 
 <script>
 export default {
-  
+  computed: {
+    user() {
+      return this.$store.getters.user
+    }
+  },
+  methods:{
+    handleCommand(cmdItem){
+      // console.log(cmdItem)
+      switch(cmdItem){
+        case 'info':
+          this.showInfoList()
+          break
+        case 'logout':
+          this.logout()
+          break  
+      }
+    },
+    showInfoList(){
+      console.log('个人信息')
+    },
+    logout(){
+      // 清除token
+      localStorage.removeItem('eleToken')
+      // 设置vuex store
+      this.$store.dispatch('clearCurrentState')
+      // 跳转
+      this.$router.push('/login')
+    }
+  }
 }
 </script>
 
