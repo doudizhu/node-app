@@ -17,6 +17,8 @@
 </template>
 
 <script>
+import jwt_decode from 'jwt-decode'
+
 export default {
   data(){
     var validatePass2 = (rule, value, callback) => {
@@ -56,10 +58,27 @@ export default {
               // 存储到ls
               localStorage.setItem('eleToken', token)
 
+              // 解析token
+              const decode = jwt_decode(token)
+              // console.log('decode:',decode)
+
+              // token存储到vuex中
+              this.$store.dispatch('setAuthenticated',!this.isEmpty(decode))
+              this.$store.dispatch('setUser',decode)
+
+
               this.$router.push('/index')
             })
         }
       });
+    },
+    isEmpty(value){
+      return (
+        value === undefined
+        || null
+        || (typeof value === 'object' && Object.keys(value).length === 0)
+        || (typeof value === 'string' && value.trim().length === 0)
+      )
     }
   }
 }

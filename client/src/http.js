@@ -21,7 +21,7 @@ axios.interceptors.request.use(config=>{
 
   if(localStorage.eleToken){
     // 设置统一的请求header
-    config.header.Authorization = localStorage.eleToken
+    config.headers.Authorization = localStorage.eleToken
   }
 
   return config;
