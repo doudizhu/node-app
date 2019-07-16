@@ -1,14 +1,17 @@
 <template lang='pug'>
   .index
     HeadNav
+    LeftMenu
     router-view
 </template>
 
 <script>
 import HeadNav from '../components/HeadNav'
+import LeftMenu from '../components/LeftMenu'
 export default {
   components:{
-    HeadNav
+    HeadNav,
+    LeftMenu,
   }
 }
 </script>
