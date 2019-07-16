@@ -1,11 +1,13 @@
-<template>
-  <div>初始化页面</div>
+<template lang='pug'>
+  .index
+    HeadNav
 </template>
 
 <script>
+import HeadNav from '../components/HeadNav'
 export default {
   components:{
-    
+    HeadNav
   }
 }
 </script>
